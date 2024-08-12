@@ -12,7 +12,13 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+      
+      - name: Setup Cloud SDK (mock)
+        run: echo "Setup Cloud SDK"
 
+      - name: Build and Submit (mock)
+        run: echo "gcloud builds submit --tag gcr.io/$PROJECT_ID/my-image"
+      
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
