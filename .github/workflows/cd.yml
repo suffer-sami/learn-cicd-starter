@@ -9,20 +9,23 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      
-      - name: Setup Cloud SDK (mock)
-        run: echo "Setup Cloud SDK"
-
-      - name: Build and Submit (mock)
-        run: echo "gcloud builds submit --tag gcr.io/$PROJECT_ID/my-image"
       
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
+
+      - name: Install goose
+        run: go install github.com/pressly/goose/v3/cmd/goose@latest
+
+      - name: Run migration
+        run: ./scripts/migrateup.sh
 
       - name: Build app
         run: ./scripts/buildprod.sh
